@@ -116,9 +116,11 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <DebuggerFlavor>DbgengKernelDebugger</DebuggerFlavor>
+    <Inf2CatUseLocalTime>true</Inf2CatUseLocalTime>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <DebuggerFlavor>DbgengKernelDebugger</DebuggerFlavor>
+    <Inf2CatUseLocalTime>true</Inf2CatUseLocalTime>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|ARM'">
     <DebuggerFlavor>DbgengKernelDebugger</DebuggerFlavor>
@@ -140,14 +142,20 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="device_handlers.cpp" />
+    <ClCompile Include="FileReference.cpp" />
     <ClCompile Include="file_delete.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="handle.cpp" />
+    <ClCompile Include="ProcessReference.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="common.h" />
     <ClInclude Include="consts.h" />
     <ClInclude Include="device_handlers.h" />
+    <ClInclude Include="FileReference.h" />
     <ClInclude Include="file_delete.h" />
+    <ClInclude Include="handle.h" />
+    <ClInclude Include="ProcessReference.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

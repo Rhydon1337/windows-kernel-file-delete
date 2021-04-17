@@ -33,6 +33,15 @@
     <ClCompile Include="file_delete.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="handle.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ProcessReference.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="FileReference.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="common.h">
@@ -45,6 +54,15 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="file_delete.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="handle.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ProcessReference.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="FileReference.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
