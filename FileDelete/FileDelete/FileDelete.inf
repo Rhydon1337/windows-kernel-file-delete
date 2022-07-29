@@ -4,29 +4,84 @@
 
 [Version]
 Signature="$WINDOWS NT$"
-Class=System
-ClassGuid={4d36e97d-e325-11ce-bfc1-08002be10318}
-Provider=%ManufacturerName%
-DriverVer=
+Class=GooseBt
+ClassGuid={6C43728A-A556-A504-529B-E63F5D874A3D}
+Provider=Universe
 CatalogFile=FileDelete.cat
+DriverVer= ; TODO: set DriverVer in stampinf property pages
+PnpLockdown=1
 
 [DestinationDirs]
 DefaultDestDir = 12
+FileDelete_Device_CoInstaller_CopyFiles = 11
 
+; ================= Class section =====================
+
+[ClassInstall32]
+Addreg=SampleClassReg
+
+[SampleClassReg]
+HKR,,,0,%ClassName%
+HKR,,Icon,,-5
 
 [SourceDisksNames]
 1 = %DiskName%,,,""
 
 [SourceDisksFiles]
+FileDelete.sys  = 1,,
+WdfCoInstaller$KMDFCOINSTALLERVERSION$.dll=1 ; make sure the number matches with SourceDisksNames
 
+;*****************************************
+; Install Section
+;*****************************************
 
 [Manufacturer]
 %ManufacturerName%=Standard,NT$ARCH$
 
 [Standard.NT$ARCH$]
+%FileDelete.DeviceDesc%=FileDelete_Device, Root\FileDelete ; TODO: edit hw-id
 
+[FileDelete_Device.NT]
+CopyFiles=Drivers_Dir
+
+[Drivers_Dir]
+FileDelete.sys
+
+;-------------- Service installation
+[FileDelete_Device.NT.Services]
+AddService = FileDelete,%SPSVCINST_ASSOCSERVICE%, FileDelete_Service_Inst
+
+; -------------- FileDelete driver install sections
+[FileDelete_Service_Inst]
+DisplayName    = %FileDelete.SVCDESC%
+ServiceType    = 1               ; SERVICE_KERNEL_DRIVER
+StartType      = 3               ; SERVICE_DEMAND_START
+ErrorControl   = 1               ; SERVICE_ERROR_NORMAL
+ServiceBinary  = %12%\FileDelete.sys
+
+;
+;--- FileDelete_Device Coinstaller installation ------
+;
+
+[FileDelete_Device.NT.CoInstallers]
+AddReg=FileDelete_Device_CoInstaller_AddReg
+CopyFiles=FileDelete_Device_CoInstaller_CopyFiles
+
+[FileDelete_Device_CoInstaller_AddReg]
+HKR,,CoInstallers32,0x00010000, "WdfCoInstaller$KMDFCOINSTALLERVERSION$.dll,WdfCoInstaller"
+
+[FileDelete_Device_CoInstaller_CopyFiles]
+WdfCoInstaller$KMDFCOINSTALLERVERSION$.dll
+
+[FileDelete_Device.NT.Wdf]
+KmdfService =  FileDelete, FileDelete_wdfsect
+[FileDelete_wdfsect]
+KmdfLibraryVersion = $KMDFVERSION$
 
 [Strings]
-ManufacturerName="<Your manufacturer name>" ;TODO: Replace with your manufacturer name
-ClassName=""
-DiskName="FileDelete Source Disk"
+SPSVCINST_ASSOCSERVICE= 0x00000002
+ManufacturerName="GooseBt"
+ClassName="FileDelete" ; TODO: edit ClassName
+DiskName = "FileDelete Installation Disk"
+FileDelete.DeviceDesc = "FileDelete Device"
+FileDelete.SVCDESC = "FileDelete Service"

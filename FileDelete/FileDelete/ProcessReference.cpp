@@ -15,11 +15,18 @@ ProcessReference::~ProcessReference() {
 	
 }
 
-NTSTATUS ProcessReference::init(size_t pid, bool attach) {
+NTSTATUS ProcessReference::init(size_t pid, bool attach)
+{
 	CHECK(PsLookupProcessByProcessId(reinterpret_cast<HANDLE>(pid), &m_process));
+	DbgPrint("zw->%p\n", m_process);
 	m_attach = attach;
-	if (attach) {
-		m_apc_state = (KAPC_STATE*)ExAllocatePool(NonPagedPool, sizeof(KAPC_STATE));
+	if (attach)
+	{
+		m_apc_state = (KAPC_STATE*)ExAllocatePool2(NonPagedPool, sizeof(KAPC_STATE), '2cba');
+		if (NULL == m_apc_state)
+			m_apc_state = (KAPC_STATE*)ExAllocatePoolZero(NonPagedPool, sizeof(KAPC_STATE), '2cba');
+		if (NULL == m_apc_state)
+			return STATUS_MEMORY_NOT_ALLOCATED;
 		KeStackAttachProcess(m_process, m_apc_state);
 	}
 	return STATUS_SUCCESS;
