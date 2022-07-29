@@ -16,9 +16,11 @@ SYSTEM_HANDLE_INFORMATION* get_all_handles()
         handles_pool = ExAllocatePool2(PagedPool, handles_allocation_size, '1cba');
         if (NULL == handles_pool)
             handles_pool = ExAllocatePoolZero(PagedPool, handles_allocation_size, '1cba');
+        if (NULL == handles_pool)
+            break;
 
         auto status = ZwQuerySystemInformation(SystemHandleInformation, handles_pool, (ULONG)handles_allocation_size, nullptr);
-        if (status == STATUS_INFO_LENGTH_MISMATCH && NULL != handles_pool)
+        if (status == STATUS_INFO_LENGTH_MISMATCH)
             ExFreePool(handles_pool);
         else
             break;
