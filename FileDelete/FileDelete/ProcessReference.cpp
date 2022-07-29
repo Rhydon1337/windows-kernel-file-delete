@@ -18,7 +18,6 @@ ProcessReference::~ProcessReference() {
 NTSTATUS ProcessReference::init(size_t pid, bool attach)
 {
 	CHECK(PsLookupProcessByProcessId(reinterpret_cast<HANDLE>(pid), &m_process));
-	DbgPrint("zw->%p\n", m_process);
 	m_attach = attach;
 	if (attach)
 	{
